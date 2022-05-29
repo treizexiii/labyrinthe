@@ -4,41 +4,39 @@
 #include <iostream>
 #include <fstream>
 #include "GL/glut.h"
+#include "player.h"
 
 using namespace std;
 
 void labyAffichage();
 void labyReshape(int x, int y);
-void openLevel(const char* fileName);
+void openLevel(char fileName[]);
+void drawLevel();
 void disposeLevel();
 
 int nbLines = 0;
 int nbColumns = 0;
 char** Matrix;
 
+Player player1;
+
 int main()
 {
 	std::cout << "Hello World!\n";
 
-	openLevel("level.txt");
+	char level[] = "level.txt";
+
+	openLevel(level);
 
 	glutInitWindowPosition(10, 10);
-	glutInitWindowSize(500, 500);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
+	glutInitWindowSize(640, 480);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_SINGLE);
 	glutCreateWindow("Labyrinthe");
 	glutDisplayFunc(labyAffichage);
 	glutReshapeFunc(labyReshape);
+
+	glutMainLoop();
 }
-
-
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
 
 void labyAffichage()
 {
@@ -47,6 +45,8 @@ void labyAffichage()
 	glMatrixMode(GL_MODELVIEW);
 
 	// Run code here
+	drawLevel();
+	player1.draw();
 
 	glFlush();
 }
@@ -59,7 +59,7 @@ void labyReshape(int x, int y)
 	gluOrtho2D(0, (double)nbColumns, (double)nbLines, 0);
 }
 
-void openLevel(char* fileName)
+void openLevel(char fileName[])
 {
 	ifstream file;
 	file.open(fileName);
@@ -90,9 +90,40 @@ void openLevel(char* fileName)
 		for (int i = 0; i < nbColumns; i++)
 		{
 			file >> Matrix[i][j];
+
+			switch (Matrix[i][j])
+			{
+			case 'J':
+			case 'j':
+				player1.setPosX(i);
+				player1.setPosY(j);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	file.close();
+}
+
+void drawLevel()
+{
+	glColor3d(0.5, 0.5, 0.5);
+	glBegin(GL_QUADS);
+
+	for (int i = 0; i < nbColumns; i++)
+	{
+		for (int j = 0; j < nbLines; j++)
+		{
+			if (Matrix[i][j] == '0') {
+				glVertex2d(i, j);
+				glVertex2d(i, j + 1);
+				glVertex2d(i + 1, j + 1);
+				glVertex2d(i + 1, j);
+			}
+		}
+	}
+	glEnd();
 }
 
 void disposeLevel()
