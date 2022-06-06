@@ -19,7 +19,7 @@ public:
     BaseEnemy() : BaseCharacter() { _nextEnemy = nullptr; }
     BaseEnemy(int x, int y) : BaseCharacter(x, y) { _nextEnemy = nullptr; }
 
-    void AutoMove();
+    virtual void AutoMove();
     void CollisionTest() const;
 
     BaseEnemy* GetNextEnemy() const { return _nextEnemy; }

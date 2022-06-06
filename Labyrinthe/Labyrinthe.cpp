@@ -18,7 +18,7 @@ void LabyReshape(int x, int y);
 void LabySpecialKey(int key, int x, int y);
 void OpenLevel(char fileName[]);
 void DrawLevel();
-void AddEnymy(int x, int y, EnemyType type);
+void AddEnemy(int x, int y, EnemyType type);
 void LabyTimer(int value);
 void IsVictory();
 void DisposeMemory();
@@ -158,11 +158,11 @@ void OpenLevel(char fileName[])
                 break;
             case 'g':
             case 'G':
-                AddEnymy(i, j, EnemyType::GREEN_ENEMY);
+                AddEnemy(i, j, EnemyType::GREEN_ENEMY);
                 break;
             case 'r':
             case 'R':
-                AddEnymy(i, j, EnemyType::RED_ENEMY);
+                AddEnemy(i, j, EnemyType::RED_ENEMY);
                 break;
             case 's':
             case 'S':
@@ -207,7 +207,7 @@ void DrawLevel()
     glPopMatrix();
 }
 
-void AddEnymy(int x, int y, EnemyType type)
+void AddEnemy(int x, int y, EnemyType type)
 {
     BaseEnemy* newEnemy = nullptr;
     switch (type)

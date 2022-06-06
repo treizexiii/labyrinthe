@@ -21,3 +21,12 @@ void RedEnemy::Draw()
     glutSolidSphere(0.07, 12,12);
     glPopMatrix();
 }
+
+void RedEnemy::AutoMove()
+{
+    if (rand() % 50 == 0)
+    {
+        AddEnemy(_posX, _posY, EnemyType::RED_ENEMY);
+    }
+    BaseEnemy::AutoMove();
+}
